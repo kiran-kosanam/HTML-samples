@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+  <head>
+
+    <meta charset="utf-8">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+
+    <title>code player</title>
+
+    <style>
+
+      body{
+        padding: 0;
+        margin: 0;
+      }
+
+      .header{
+        background-color: #eef2f0;
+        width:100% - 6px;
+        height:35px;
+        padding: 6px;
+
+      }
+      #title{
+        float:left;
+        font-size: 120%;
+        font-weight: bold;
+      }
+      .panal{
+        position:relative;
+        float:left;
+        margin-left:450px;
+
+      }
+
+      .panalElements{
+        float:left;
+        padding: 5px;
+        border: 1px solid grey;
+        border-right: none;
+
+      }
+      #html{
+        border-top-left-radius: 4px;
+        border-bottom-left-radius: 4px;
+      }
+      #output{
+        border-right: 1px solid grey;
+        border-top-right-radius: 4px;
+        border-bottom-right-radius: 4px;
+      }
+
+      .active{
+        background-color: #EAF2FF;
+      }
+
+      .highlighted{
+        background-color: grey;
+        cursor: pointer;
+      }
+      textarea{
+        resize: none;
+      }
+
+      .panel{
+        float:left;
+        width: 50%;
+        border-left: none;
+      }
+      .hidden{
+
+        display: none;
+
+      }
+      iframe{
+        border:none;
+      }
+    </style>
+
+  </head>
+
+  <body>
+    <div class="header">
+      <div id="title">Code Player</div>
+        <div class="panal">
+          <div class="panalElements active" id="html">HTML</div>
+          <div class="panalElements" id="css">CSS</div>
+          <div class="panalElements" id="javascript">JavaScript</div>
+          <div class="panalElements active" id="output">Output</div>
+      </div>
+    </div>
+
+    <div id="bodyContainer">
+      <textarea id="htmlPanal" class="panel"><p id="pa"> hello kiran</p></textarea>
+      <textarea id="cssPanal" class="panel hidden"> p{color:green;}</textarea>
+      <textarea id="javascriptPanal" class="panel hidden"> alert("done!")</textarea>
+      <iframe id="iframePanal" class=panel></iframe>
+    </div>
+
+    <script type="text/javascript">
+    function update(){
+      $("iframe").contents().find("html").html("<html><head><style type='text/css'>" + $("#cssPanal").val() + "</style></head><body>" + $("#htmlPanal").val() + "</body></html>");
+      document.getElementById("iframePanal").contentWindow.eval($("#javascriptPanal").val());
+
+    }
+    $(".panalElements").hover(function(){
+      $(this).addClass("highlighted");
+    }, function(){
+      $(this).removeClass("highlighted");
+    });
+
+    $(".panalElements").click(function(){
+      $(this).removeClass("highlighted");
+      $(this).toggleClass("active");
+      var panalId = $(this).attr("id") + "Panal";
+      $("#" + panalId).toggleClass("hidden");
+      var n = 4 - $(".hidden").length;
+      $(".panel").width(($(window).width() / n )-4);
+
+
+    });
+    update();
+    $("textarea").height($(window).height() - $(".header").height() - 17);
+    $(".panel").height($(window).height() - $(".header").height() - 17);
+    $("textarea").on("change keyup paste", function(){
+      update();
+    });
+
+    </script>
+
+  </body>
+
+</html>
